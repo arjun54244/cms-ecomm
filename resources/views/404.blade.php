@@ -1,0 +1,35 @@
+@extends('layout.app')
+
+@section('title', '404 Not Found | Ecomart')
+
+@section('meta_description', '404 Not Found | Ecomart')
+
+@section('meta_keywords', '404, Not Found, Ecomart')
+
+@section('og_title', '404 Not Found | Ecomart')
+
+@section('og_description', '404 Not Found | Ecomart')
+
+@section('content')
+
+   <!-- error area start  -->
+   <section class="error-area">
+      <div class="container container-small">
+         <div class="row">
+            <div class="col-lg-12">
+               <div class="error-content">
+                  <div class="error-number">404</div>
+                  <h2 class="error-text">Sorry! <br> Page didn't found</h2>
+                  <p>The page you are looking for might have been removed its name changed or is temporarily
+                     unavailable.</p>
+                  <div class="error-btn">
+                     <a href="index.html" class="fill-btn">Back to Homepage</a>
+                  </div>
+               </div>
+            </div>
+         </div>
+      </div>
+   </section>
+   <!-- error area end  -->
+
+@endsection
