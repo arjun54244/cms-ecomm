@@ -123,7 +123,7 @@
                               <li class=""><a href="{{ route('home') }}">Home</a></li>
                               <li class=""><a href="{{ route('about') }}">About</a></li>
                               <li class=""><a href="{{ route('shop') }}">Shop</a></li>
-                              <li class="menu-item-has-children"><a href="#">Pages</a>
+                              <!-- <li class="menu-item-has-children"><a href="#">Pages</a>
                                  <ul class="sub-menu">
                                     <li><a href="about.html">About</a></li>
                                     <li><a href="register.html">Register</a></li>
@@ -131,12 +131,9 @@
                                     <li><a href="faq.html">FAQ</a></li>
                                     <li><a href="error-404.html">404 page</a></li>
                                  </ul>
-                              </li>
-                              <li class="menu-item-has-children"><a href="blog.html">Blog</a>
-                                 <ul class="sub-menu">
-                                    <li><a href="blog.html">Blog</a></li>
-                                    <li><a href="blog-details.html">Blog Details</a></li>
-                                 </ul>
+                              </li> -->
+                              <li><a href="{{ route('faq') }}">FAQs</a>
+                              <li><a href="{{ route('blog.index') }}">Blog</a>
                               </li>
                               <li><a href="{{ route('contact') }}">Contact</a></li>
                            </ul>

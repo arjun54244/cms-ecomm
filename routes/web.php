@@ -1,6 +1,8 @@
 <?php
 
+use App\Http\Controllers\BlogController;
 use App\Http\Controllers\CheckoutController;
+use App\Http\Controllers\FaqController;
 use App\Http\Controllers\PageController;
 use App\Http\Controllers\ShopController;
 use App\Models\Category;
@@ -27,16 +29,11 @@ Route::get('/', function () {
 
 Route::view('about', 'about')->name('about');
 Route::view('contact', 'contact')->name('contact');
+Route::get('/faq', [FaqController::class, 'index'])->name('faq');
 
 Route::controller(ShopController::class)->group(function () {
-
-    // Shop
     Route::get('/shop', 'index')->name('shop');
-
-    // Category
     Route::get('/category/{slug}', 'category')->name('category');
-
-    // Product
     Route::get('/product/{slug}', 'show')->name('product.show');
 });
 
@@ -56,9 +53,13 @@ Route::controller(CheckoutController::class)->group(function () {
 
 });
 
+Route::controller(BlogController::class)->group(function () {
+    Route::get('/blogs', 'index')->name('blog.index');
+    Route::get('/blog/{slug}', 'show')->name('blog.show');
+});
+
 Route::get('/page/{slug}', [PageController::class, 'show'])
     ->name('page.show');
-
 
 
 
