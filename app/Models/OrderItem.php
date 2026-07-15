@@ -18,6 +18,8 @@ class OrderItem extends Model
         'image',
         'price',
         'quantity',
+        'selected_size',
+        'selected_color',
         'total',
     ];
 

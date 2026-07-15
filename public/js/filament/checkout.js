@@ -80,6 +80,8 @@
          image: item.image || '',
          price: Number(item.price) || 0,
          quantity: Number(item.quantity) || 1,
+         size: item.size || '',
+         color: item.color || '',
       };
    }
 
@@ -125,12 +127,18 @@
          const lineTotal = item.price * item.quantity;
          subtotal += lineTotal;
 
+         const variantBadge = [
+            item.size ? '<span class="badge bg-secondary" style="font-size:11px; margin-right:5px; padding: 4px 8px; font-weight: normal; color: #fff;">Size: ' + escapeHtml(item.size) + '</span>' : '',
+            item.color ? '<span class="badge bg-secondary" style="font-size:11px; margin-right:5px; padding: 4px 8px; font-weight: normal; color: #fff;">Color: ' + escapeHtml(item.color) + '</span>' : ''
+         ].filter(Boolean).join(' ');
+
          const tr = document.createElement('tr');
          tr.className = 'cart_item';
          tr.innerHTML =
             '<td class="product-name">' +
                (item.image ? '<img src="' + item.image + '" alt="' + escapeHtml(item.name) + '" style="width:50px;height:50px;object-fit:cover;margin-right:10px;vertical-align:middle;">' : '') +
                escapeHtml(item.name) +
+               (variantBadge ? '<div style="margin-top:5px; margin-left:60px;">' + variantBadge + '</div>' : '') +
                ' <strong class="product-quantity"> × ' + item.quantity + '</strong>' +
             '</td>' +
             '<td class="product-total"><span class="amount">' + formatMoney(lineTotal) + '</span></td>';

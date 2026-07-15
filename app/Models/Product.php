@@ -22,6 +22,8 @@ class Product extends Model
         'sale_price',
         'cost_price',
         'stock',
+        'sizes',
+        'colors',
         'weight',
         'gender',
         'fabric',
@@ -48,6 +50,10 @@ class Product extends Model
         'is_new' => 'boolean',
 
         'is_active' => 'boolean',
+
+        'sizes' => 'array',
+
+        'colors' => 'array',
     ];
 
     public function category()

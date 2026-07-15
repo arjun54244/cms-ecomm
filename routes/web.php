@@ -18,7 +18,7 @@ Route::get('/', function () {
             'products' => function ($query) {
                 $query->active()
                     ->latest()
-                    ->take(8);
+                    ->take(16);
             }
         ])
         ->orderBy('sort_order')

@@ -178,9 +178,7 @@
                                         </a>
 
                                         <div class="product-action">
-                                            <a href="#" class="quick-view-btn"><i class="fal fa-eye"></i></a>
-                                            <a href="#" class="wishlist-btn"><i class="fal fa-heart"></i></a>
-                                            <a href="#" class="compare-btn"><i class="fal fa-exchange"></i></a>
+                                            <a href="{{ route('product.show', $product->slug) }}" class="quick-view-btn"><i class="fal fa-eye"></i></a>
                                         </div>
 
                                         <div class="product-action-bottom flex-column gap-1">

@@ -62,6 +62,12 @@ document.addEventListener("DOMContentLoaded", function () {
                             ${item.name}
                         </a>
 
+                        ${(item.size || item.color) ? `
+                        <div class="variant-badges mt-1">
+                            ${item.size  ? `<span class="cart-badge">${item.size}</span>` : ''}
+                            ${item.color ? `<span class="cart-badge" style="background:${item.color.toLowerCase()};color:#fff;border-color:${item.color.toLowerCase()}">${item.color}</span>` : ''}
+                        </div>` : ''}
+
                     </td>
 
                     <td class="product-price">
@@ -74,7 +80,9 @@ document.addEventListener("DOMContentLoaded", function () {
 
                             <button
                                 class="qty-minus btn btn-sm btn-light"
-                                data-id="${item.id}">
+                                data-id="${item.id}"
+                                data-size="${item.size || ''}"
+                                data-color="${item.color || ''}">
 
                                 -
 
@@ -85,12 +93,16 @@ document.addEventListener("DOMContentLoaded", function () {
                                 min="1"
                                 value="${item.quantity}"
                                 data-id="${item.id}"
+                                data-size="${item.size || ''}"
+                                data-color="${item.color || ''}"
                                 class="cart-qty form-control text-center mx-2"
                                 style="width:70px">
 
                             <button
                                 class="qty-plus btn btn-sm btn-light"
-                                data-id="${item.id}">
+                                data-id="${item.id}"
+                                data-size="${item.size || ''}"
+                                data-color="${item.color || ''}">
 
                                 +
 
@@ -110,7 +122,9 @@ document.addEventListener("DOMContentLoaded", function () {
 
                         <a href="#"
                             class="remove-cart"
-                            data-id="${item.id}">
+                            data-id="${item.id}"
+                            data-size="${item.size || ''}"
+                            data-color="${item.color || ''}">
 
                             <i class="fa fa-times"></i>
 
@@ -134,15 +148,25 @@ document.addEventListener("DOMContentLoaded", function () {
 
         if (e.target.closest(".qty-plus")) {
 
-            let id = Number(e.target.closest(".qty-plus").dataset.id);
+            const btn = e.target.closest(".qty-plus");
+
+            let id = Number(btn.dataset.id);
+
+            let size = btn.dataset.size || '';
+
+            let color = btn.dataset.color || '';
 
             let cart = Cart.get();
 
-            let product = cart.find(i => i.id === id);
+            let product = cart.find(i =>
+                i.id === id &&
+                (i.size  || '') === size &&
+                (i.color || '') === color
+            );
 
             if (product) {
 
-                Cart.update(id, product.quantity + 1);
+                Cart.update(id, size, color, product.quantity + 1);
 
                 renderCart();
             }
@@ -150,11 +174,21 @@ document.addEventListener("DOMContentLoaded", function () {
 
         if (e.target.closest(".qty-minus")) {
 
-            let id = Number(e.target.closest(".qty-minus").dataset.id);
+            const btn = e.target.closest(".qty-minus");
+
+            let id = Number(btn.dataset.id);
+
+            let size = btn.dataset.size || '';
+
+            let color = btn.dataset.color || '';
 
             let cart = Cart.get();
 
-            let product = cart.find(i => i.id === id);
+            let product = cart.find(i =>
+                i.id === id &&
+                (i.size  || '') === size &&
+                (i.color || '') === color
+            );
 
             if (product) {
 
@@ -162,7 +196,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
                 if (qty < 1) qty = 1;
 
-                Cart.update(id, qty);
+                Cart.update(id, size, color, qty);
 
                 renderCart();
             }
@@ -172,9 +206,12 @@ document.addEventListener("DOMContentLoaded", function () {
 
             e.preventDefault();
 
-            let id = Number(e.target.closest(".remove-cart").dataset.id);
-
-            Cart.remove(id);
+            const el = e.target.closest(".remove-cart");
+            Cart.remove(
+                Number(el.dataset.id),
+                el.dataset.size  || '',
+                el.dataset.color || ''
+            );
 
             renderCart();
         }
@@ -190,9 +227,15 @@ document.addEventListener("DOMContentLoaded", function () {
         if (isNaN(qty) || qty < 1)
             qty = 1;
 
+        const input = e.target;
+
         Cart.update(
 
-            Number(e.target.dataset.id),
+            Number(input.dataset.id),
+
+            input.dataset.size  || '',
+
+            input.dataset.color || '',
 
             qty
 

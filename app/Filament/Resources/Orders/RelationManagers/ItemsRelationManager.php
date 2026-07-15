@@ -28,6 +28,18 @@ class ItemsRelationManager extends RelationManager
                     ->searchable()
                     ->description(fn($record) => $record->product_slug),
 
+                TextColumn::make('selected_size')
+                    ->label('Size')
+                    ->badge()
+                    ->color('gray')
+                    ->placeholder('—'),
+
+                TextColumn::make('selected_color')
+                    ->label('Color')
+                    ->badge()
+                    ->color('primary')
+                    ->placeholder('—'),
+
                 TextColumn::make('price')
                     ->label('Unit Price')
                     ->money('INR'),

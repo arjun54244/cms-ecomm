@@ -271,6 +271,9 @@ p {
 .pos-abs {
   position: absolute;
 }
+.page-title{
+  color: #fff;
+}
 
 /*--
     - Background color
@@ -1865,7 +1868,7 @@ div.mean-container a.meanmenu-reveal {
   display: flex;
   justify-content: center;
   position: absolute;
-  bottom: -100px;
+  bottom: 20px;
   width: 100%;
   transition: 0.3s;
   z-index: 2;
@@ -3726,7 +3729,7 @@ div.tagcloud a:hover {
 .breadcrumb-menu li span {
   font-size: 16px;
   font-weight: 500;
-  color: var(--clr-common-heading);
+  color: #fff;
 }
 .breadcrumb-menu li:not(:last-child):after {
   display: inline-block;

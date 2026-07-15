@@ -1,26 +1,23 @@
 <?php
 
 namespace App\Services;
+
 use App\Models\Order;
+use App\Models\Setting;
 use Barryvdh\DomPDF\Facade\Pdf;
 use Barryvdh\DomPDF\PDF as DomPdf;
 
 class OrderInvoiceService
 {
-    /**
-     * Create a new class instance.
-     */
-    public function __construct()
-    {
-        //
-    }
-
     public function generate(Order $order): DomPdf
     {
         $order->loadMissing('items');
 
+        $settings = Setting::getSettings();
+
         return Pdf::loadView('pdf.order-invoice', [
-            'order' => $order,
+            'order'    => $order,
+            'settings' => $settings,
         ])->setPaper('a4');
     }
 

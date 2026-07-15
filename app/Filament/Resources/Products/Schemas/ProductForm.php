@@ -3,6 +3,8 @@
 namespace App\Filament\Resources\Products\Schemas;
 
 use Filament\Forms\Components\Select;
+use Filament\Forms\Components\CheckboxList;
+use Filament\Forms\Components\TagsInput;
 use Filament\Schemas\Components\Grid;
 use Filament\Schemas\Components\Section;
 use Filament\Schemas\Schema;
@@ -257,6 +259,58 @@ class ProductForm
 
                                 Textarea::make('care_instruction')
                                     ->rows(4),
+
+                            ]),
+
+                        /*
+                        |--------------------------------------------------------------------------
+                        | Variants (Sizes & Colors)
+                        |--------------------------------------------------------------------------
+                        */
+
+                        Tabs\Tab::make('Variants')
+
+                            ->schema([
+
+                                Grid::make(2)
+
+                                    ->schema([
+
+                                        CheckboxList::make('sizes')
+                                            ->label('Available Sizes')
+                                            ->options([
+                                                'XS'   => 'XS — Extra Small',
+                                                'S'    => 'S — Small',
+                                                'M'    => 'M — Medium',
+                                                'L'    => 'L — Large',
+                                                'XL'   => 'XL — Extra Large',
+                                                'XXL'  => 'XXL — Double XL',
+                                                'XXXL' => 'XXXL — Triple XL',
+                                            ])
+                                            ->columns(2)
+                                            ->helperText('Select all sizes this product is available in.'),
+
+                                        TagsInput::make('colors')
+                                            ->label('Available Colors')
+                                            ->suggestions([
+                                                'Red',
+                                                'Pink',
+                                                'Yellow',
+                                                'Blue',
+                                                'Green',
+                                                'White',
+                                                'Black',
+                                                'Orange',
+                                                'Purple',
+                                                'Brown',
+                                                'Grey',
+                                                'Maroon',
+                                                'Navy',
+                                                'Beige',
+                                            ])
+                                            ->helperText('Type a color and press Enter, or pick from suggestions.'),
+
+                                    ]),
 
                             ]),
 

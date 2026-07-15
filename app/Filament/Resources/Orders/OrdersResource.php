@@ -78,7 +78,10 @@ class OrdersResource extends Resource
             ->label('Download Invoice')
             ->icon('heroicon-o-arrow-down-tray')
             ->color('gray')
-            ->visible(fn(Order $record): bool => $record->payment_status === 'paid')
+            ->visible(fn(Order $record): bool =>
+                $record->payment_status === 'paid' ||
+                ($record->payment_method === 'cod' && in_array($record->status, ['confirmed', 'processing', 'shipped', 'delivered']))
+            )
             ->action(function (Order $record) {
                 /** @var OrderInvoiceService $invoiceService */
                 $invoiceService = app(OrderInvoiceService::class);

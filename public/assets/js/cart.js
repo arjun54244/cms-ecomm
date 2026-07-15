@@ -20,7 +20,12 @@ const Cart = {
 
         let cart = this.get();
 
-        let existing = cart.find(item => item.id == product.id);
+        // Use a composite key so the same product in different size/color combos are distinct items
+        let existing = cart.find(item =>
+            item.id   == product.id &&
+            (item.size  || '') === (product.size  || '') &&
+            (item.color || '') === (product.color || '')
+        );
 
         if (existing) {
 
@@ -36,21 +41,27 @@ const Cart = {
 
     },
 
-    remove(id) {
+    remove(id, size, color) {
 
-        let cart = this.get().filter(item => item.id != id);
+        let cart = this.get().filter(item =>
+            !(item.id == id &&
+              (item.size  || '') === (size  || '') &&
+              (item.color || '') === (color || ''))
+        );
 
         this.save(cart);
 
     },
 
-    update(id, quantity) {
+    update(id, size, color, quantity) {
 
         let cart = this.get();
 
         cart.forEach(item => {
 
-            if (item.id == id) {
+            if (item.id == id &&
+                (item.size  || '') === (size  || '') &&
+                (item.color || '') === (color || '')) {
 
                 item.quantity = quantity;
 
@@ -124,6 +135,11 @@ const Cart = {
 
     cart.forEach(item => {
 
+        const variantBadge = [
+            item.size  ? `<span class="cart-badge">${item.size}</span>`  : '',
+            item.color ? `<span class="cart-badge" style="background:${item.color.toLowerCase()};color:#fff;border-color:${item.color.toLowerCase()}">${item.color}</span>` : ''
+        ].filter(Boolean).join(' ');
+
         html += `
 
         <div class="sidebar-list-item">
@@ -150,6 +166,8 @@ const Cart = {
 
                 </div>
 
+                ${variantBadge ? `<div class="variant-badges mt-1">${variantBadge}</div>` : ''}
+
                 <div class="product-pricing">
 
                     <span class="item-number">
@@ -170,7 +188,9 @@ const Cart = {
 
                     class="remove-item remove-cart"
 
-                    data-id="${item.id}">
+                    data-id="${item.id}"
+                    data-size="${item.size || ''}"
+                    data-color="${item.color || ''}">
 
                     <i class="fal fa-times"></i>
 
@@ -228,7 +248,11 @@ document.addEventListener("click", function (e) {
 
         price: Number(btn.dataset.price),
 
-        quantity: Number(btn.dataset.quantity || 1)
+        quantity: Number(btn.dataset.quantity || 1),
+
+        size:  btn.dataset.size  || '',
+
+        color: btn.dataset.color || ''
 
     };
 
@@ -270,7 +294,11 @@ document.addEventListener("click", function (e) {
 
         price: Number(btn.dataset.price),
 
-        quantity: Number(btn.dataset.quantity || 1)
+        quantity: Number(btn.dataset.quantity || 1),
+
+        size:  btn.dataset.size  || '',
+
+        color: btn.dataset.color || ''
 
     });
     Cart.renderSidebar();
@@ -290,7 +318,12 @@ document.addEventListener("click", function (e) {
 
     e.preventDefault();
 
-    Cart.remove(Number(e.target.closest(".remove-cart").dataset.id));
+    const el = e.target.closest(".remove-cart");
+    Cart.remove(
+        Number(el.dataset.id),
+        el.dataset.size  || '',
+        el.dataset.color || ''
+    );
 
     // location.reload();
 Cart.renderSidebar();

@@ -244,6 +244,8 @@ class CheckoutController extends Controller
             'cart.*.id' => ['required', 'integer', 'exists:products,id'],
             'cart.*.price' => ['required', 'numeric', 'min:0'],
             'cart.*.quantity' => ['required', 'integer', 'min:1'],
+            'cart.*.size'  => ['nullable', 'string', 'max:10'],
+            'cart.*.color' => ['nullable', 'string', 'max:50'],
         ]);
 
         try {
@@ -257,17 +259,19 @@ class CheckoutController extends Controller
                 foreach ($validated['cart'] as $cartLine) {
                     $product = Product::findOrFail($cartLine['id']);
 
-                    $unitPrice = $product->price ?? $cartLine['price'];
+                    $unitPrice = $product->sale_price ?? $product->price ?? $cartLine['price'];
                     $quantity = (int) $cartLine['quantity'];
                     $lineTotal = $unitPrice * $quantity;
 
                     $subtotal += $lineTotal;
 
                     $lineItems[] = [
-                        'product' => $product,
+                        'product'    => $product,
                         'unit_price' => $unitPrice,
-                        'quantity' => $quantity,
+                        'quantity'   => $quantity,
                         'line_total' => $lineTotal,
+                        'size'       => $cartLine['size']  ?? null,
+                        'color'      => $cartLine['color'] ?? null,
                     ];
                 }
 
@@ -302,14 +306,16 @@ class CheckoutController extends Controller
                     $product = $line['product'];
 
                     OrderItem::create([
-                        'order_id' => $order->id,
-                        'product_id' => $product->id,
-                        'product_name' => $product->name,
-                        'product_slug' => $product->slug,
-                        'image' => $product->featured_image ?? null,
-                        'price' => $line['unit_price'],
-                        'quantity' => $line['quantity'],
-                        'total' => $line['line_total'],
+                        'order_id'       => $order->id,
+                        'product_id'     => $product->id,
+                        'product_name'   => $product->name,
+                        'product_slug'   => $product->slug,
+                        'image'          => $product->featured_image ?? null,
+                        'price'          => $line['unit_price'],
+                        'quantity'       => $line['quantity'],
+                        'selected_size'  => $line['size']  ?? null,
+                        'selected_color' => $line['color'] ?? null,
+                        'total'          => $line['line_total'],
                     ]);
                 }
 

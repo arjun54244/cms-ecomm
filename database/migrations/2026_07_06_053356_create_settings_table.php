@@ -43,7 +43,7 @@ return new class extends Migration {
             // SEO Defaults
             $table->string('meta_title')->nullable();
             $table->text('meta_description')->nullable();
-            $table->json('meta_keywords')->nullable()->change();
+            $table->json('meta_keywords')->nullable();
 
             // Analytics
             $table->text('google_analytics')->nullable();
@@ -53,7 +53,7 @@ return new class extends Migration {
         });
     }
 
-    /**
+    /**.     
      * Reverse the migrations.
      */
     public function down(): void
