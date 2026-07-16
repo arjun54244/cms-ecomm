@@ -7,6 +7,7 @@ use App\Http\Controllers\PageController;
 use App\Http\Controllers\ShopController;
 use App\Models\Category;
 use Illuminate\Support\Facades\Route;
+use Illuminate\Support\Facades\Artisan;
 
 Route::get('/search-products', [ShopController::class, 'search'])
     ->name('search.products');
@@ -60,6 +61,11 @@ Route::controller(BlogController::class)->group(function () {
 
 Route::get('/page/{slug}', [PageController::class, 'show'])
     ->name('page.show');
+    
+Route::get('/symlink', function () {
+    Artisan::call('storage:link');
+    return 'Storage link created successfully!';
+});
 
 
 
